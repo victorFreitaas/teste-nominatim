@@ -1,0 +1,26 @@
+<header class="page-header">
+  <div>
+    <p class="eyebrow">Laboratório de mapas · Etapa 02</p>
+    <h1>Explore Brasília</h1>
+    <p class="intro">Selecione um ponto e explore a geocodificação reversa do Nominatim.</p>
+  </div>
+  <span class="location">Brasília, DF · Brasil</span>
+</header>
+
+<main>
+  <section aria-labelledby="map-heading" class="map-section">
+    <div class="map-heading">
+      <h2 id="map-heading">Mapa interativo</h2>
+      <p id="map-help">Arraste para navegar. Clique para selecionar um ponto.</p>
+    </div>
+    <div class="workspace">
+      <app-map (pointSelected)="selectedPoint.set($event)" />
+      <app-reverse-panel [point]="selectedPoint()" />
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>Protótipo acadêmico · Angular + Leaflet + OpenStreetMap</span>
+  <a href="https://www.openstreetmap.org/fixthemap" target="_blank" rel="noopener">Relatar um problema no mapa ↗</a>
+</footer>

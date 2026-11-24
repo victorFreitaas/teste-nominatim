@@ -1,0 +1,9 @@
+@import 'leaflet/dist/leaflet.css';
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #f5f7f3;
+  color: #203b33;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}

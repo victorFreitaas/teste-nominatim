@@ -1,0 +1,17 @@
+:host {
+  display: flex;
+  flex: 1;
+  min-height: 65dvh;
+}
+.map {
+  flex: 1;
+  min-width: 0;
+  min-height: 65dvh;
+  border: 1px solid #c8d6cc;
+  border-radius: 12px;
+  background: #e2e9dd;
+}
+.map:focus-visible {
+  outline: 3px solid #287e70;
+  outline-offset: 3px;
+}

@@ -1,0 +1,45 @@
+<aside aria-labelledby="reverse-heading" [attr.aria-busy]="loading()">
+  <p class="eyebrow">Geocodificação reversa</p>
+  <h2 id="reverse-heading">Que endereço é este?</h2>
+  <p>Clique no mapa para selecionar um ponto. A consulta só é enviada ao acionar o botão.</p>
+  @if (point(); as selected) {
+    <dl class="coordinates">
+      <div><dt>Latitude</dt><dd>{{ selected.lat | number:'1.6-6':'en-US' }}</dd></div>
+      <div><dt>Longitude</dt><dd>{{ selected.lon | number:'1.6-6':'en-US' }}</dd></div>
+    </dl>
+  } @else {
+    <p class="empty">Nenhum ponto selecionado.</p>
+  }
+  <button type="button" [disabled]="!point() || loading()" (click)="consult()">
+    {{ loading() ? 'Consultando…' : 'Consultar endereço' }}
+  </button>
+  <div aria-live="polite" aria-atomic="true">
+    @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+    @if (lookup(); as data) {
+      <section class="result" aria-labelledby="result-heading">
+        <h3 id="result-heading">Endereço retornado</h3>
+        <p>{{ data.result.display_name }}</p>
+        <p class="meta">{{ data.fromCache ? 'Cache local' : 'Consulta ao Nominatim' }} · {{ data.elapsedMs }} ms</p>
+        <dl class="address">
+          <div><dt>Rua</dt><dd>{{ data.result.address?.['road'] ?? data.result.address?.['pedestrian'] ?? 'Não informado' }}</dd></div>
+          <div><dt>Número</dt><dd>{{ data.result.address?.['house_number'] ?? 'Não informado' }}</dd></div>
+          <div><dt>Bairro</dt><dd>{{ data.result.address?.['suburb'] ?? data.result.address?.['neighbourhood'] ?? 'Não informado' }}</dd></div>
+          <div><dt>Cidade / localidade</dt><dd>{{ data.result.address?.['city'] ?? data.result.address?.['town'] ?? data.result.address?.['village'] ?? data.result.address?.['municipality'] ?? 'Não informado' }}</dd></div>
+          <div><dt>UF / estado</dt><dd>{{ data.result.address?.['state'] ?? 'Não informado' }}</dd></div>
+          <div><dt>CEP</dt><dd>{{ data.result.address?.['postcode'] ?? 'Não informado' }}</dd></div>
+          <div><dt>País</dt><dd>{{ data.result.address?.['country'] ?? 'Não informado' }}</dd></div>
+        </dl>
+        <details>
+          <summary>Todos os campos de endereço</summary>
+          @for (field of data.result.address | keyvalue; track field.key) {
+            <p class="field"><strong>{{ field.key }}:</strong> {{ field.value }}</p>
+          } @empty { <p>Sem campos de endereço.</p> }
+        </details>
+        <details><summary>Resposta JSON original</summary><pre>{{ data.result | json }}</pre></details>
+      </section>
+    }
+  </div>
+  <p class="note">O endereço corresponde ao objeto adequado mais próximo no OpenStreetMap e pode diferir do ponto clicado.</p>
+  <p class="note">Use pontos públicos, sem dados pessoais ou confidenciais. Consultas bem-sucedidas ficam em cache neste navegador por 24 horas.</p>
+  <p class="note">Dados © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a> · <a href="https://operations.osmfoundation.org/policies/nominatim/" target="_blank" rel="noopener">Política do Nominatim</a></p>
+</aside>
